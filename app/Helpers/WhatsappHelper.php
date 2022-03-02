@@ -58,15 +58,15 @@ class WhatsappHelper
    }
 
    public static function getImgFromXml($xmlObj){
-    $img = false;
-    if(isset($xmlObj->children('media', true)->content)){
-        $obj = $xmlObj->children('media', true)->content;
-        $imgJson = json_encode($obj->attributes());
-        $newArr = json_decode($imgJson, true);
-        $img = $newArr['@attributes']['url'];
+        $img = false;
+        if(isset($xmlObj->children('media', true)->content)){
+            $obj = $xmlObj->children('media', true)->content;
+            $imgJson = json_encode($obj->attributes());
+            $newArr = json_decode($imgJson, true);
+            $img = $newArr['@attributes']['url'];
+        }
+        return $img;
     }
-    return $img;
-}
 
 
 }
