@@ -5,6 +5,7 @@ namespace App\Services\Whatsapp;
 use Exception;
 use Throwable;
 use App\Models\User;
+use App\Models\GroupLinks;
 use App\Models\NewsMirror;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
@@ -30,6 +31,18 @@ class WhatsappService extends BaseService
             $urlXML = env('RSS_LINK_CONFIRMA_NOTICIA');
             $xmlFile = simplexml_load_file($urlXML,'SimpleXMLElement', LIBXML_NOCDATA);
             $news = [];
+            $grupoUrl = 'https://chat.whatsapp.com/BiNLqOnG0ua2Kisr9ZW9Z0';
+            $groupsTosend = [];
+            $groups = GroupLinks::all();
+            foreach($groups as $g){
+                $response = (new WhatsappHelper)->getGroupInfo(trim($g->link));
+                if(isset($response->phone)){
+                    $idGrupo = $response->phone;
+                    array_push($groupsTosend, $idGrupo);
+                }
+
+            }
+
             foreach ($xmlFile->channel->item as $item) {
                 $img = WhatsappHelper::getImgFromXml($item);
                 $item->addChild('thumbnail', $img);
@@ -42,15 +55,18 @@ class WhatsappService extends BaseService
                 foreach($news as $new){
                     $hasNew = NewsMirror::where('guid', $new['guid'])->first();
                     if(!isset($hasNew)){
-                        $phone = "5511964585695";
-                        $linkUrl = $new['link'];
-                        $thumbnail = $new['thumbnail'];
-                        $message = '📰🔍 ';
-                        // $message = $news['description'];
-                        $title = $new['title'];
-                        $linkDescription = $new['category'];
+                        foreach($groupsTosend as $gt){
+                            // $phone = "5511964585695";
+                            $phone = $gt;
+                            $linkUrl = $new['link'];
+                            $thumbnail = $new['thumbnail'];
+                            $message = (new WhatsappHelper)->getResume($new['description'], 130);
 
-                        $response = (new WhatsappHelper)->sendLink($phone, $message, $thumbnail, $linkUrl, $title, $linkDescription);
+                            $title = $new['title'];
+                            $linkDescription = $new['category'];
+                            $response = (new WhatsappHelper)->sendLink($phone, $message, $thumbnail, $linkUrl, $title, $linkDescription);
+                        }
+
 
                         array_push($newsToSend, $new );
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateXmlMirrorsTable extends Migration
+class CreateGroupLinksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateXmlMirrorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('xml_mirrors', function (Blueprint $table) {
+        Schema::create('group_links', function (Blueprint $table) {
             $table->id();
-            $table->json('list')->nullable();
+            $table->string('title')->nullable();
+            $table->string('link')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateXmlMirrorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('xml_mirrors');
+        Schema::dropIfExists('group_links');
     }
 }

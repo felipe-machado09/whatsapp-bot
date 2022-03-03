@@ -35,6 +35,11 @@ class WhatsappHelper
         return $response->object();
    }
 
+   public function getGroupInfo(string $url){
+        $response = Http::get($this->finalUrl.'/group-invitation-metadata?url='.$url);
+        return $response->object();
+   }
+
    public function sendLink(string $phone, string $message,string $thumbail ,string $linkUrl,string $title,string $linkDescription, int $delayMessage = 0){
         $response = Http::post($this->finalUrl.'/send-link', [
             "phone" => $phone,
@@ -67,6 +72,15 @@ class WhatsappHelper
         }
         return $img;
     }
+
+   public static function getResume($str, $limit=100, $strip = false) {
+        $str = ($strip == true)?strip_tags($str):$str;
+        if (strlen ($str) > $limit) {
+            $str = substr ($str, 0, $limit - 3);
+            return (substr ($str, 0, strrpos ($str, ' ')).'...');
+        }
+        return trim($str);
+   }
 
 
 }
