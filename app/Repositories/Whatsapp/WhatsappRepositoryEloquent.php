@@ -32,6 +32,7 @@ class WhatsappRepositoryEloquent implements WhatsappRepositoryInterface
             'title' => $new['title'],
             'link' => $new['link'],
             'guid' => $new['guid'],
+            'author' => $new['author'],
             'description' => $new['description'],
             'category' => $new['category'],
             'pubDate' => $new['pubDate']

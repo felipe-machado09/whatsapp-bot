@@ -55,22 +55,26 @@ class WhatsappService extends BaseService
                 foreach($news as $new){
                     $hasNew = NewsMirror::where('guid', $new['guid'])->first();
                     if(!isset($hasNew)){
-                        foreach($groupsTosend as $gt){
-                            // $phone = "5511964585695";
-                            $phone = $gt;
-                            $linkUrl = $new['link'];
-                            $thumbnail = $new['thumbnail'];
-                            $message = (new WhatsappHelper)->getResume($new['description'], 130);
+                        if($new['author'] == "Jornalismo"){
+                            //$phone = "5511964585695";
+                             foreach($groupsTosend as $gt){
+                                $phone = $gt;
+                                $linkUrl = $new['link'];
+                                $thumbnail = $new['thumbnail'];
+                                $message = (new WhatsappHelper)->getResume($new['description'], 130);
 
-                            $title = $new['title'];
-                            $linkDescription = $new['category'];
-                            $response = (new WhatsappHelper)->sendLink($phone, $message, $thumbnail, $linkUrl, $title, $linkDescription);
+                                $title = $new['title'];
+                                $linkDescription = $new['category'];
+                                $response = (new WhatsappHelper)->sendLink($phone, $message, $thumbnail, $linkUrl, $title, $linkDescription);
+
+                            }
+
+
                         }
-
-
                         array_push($newsToSend, $new );
 
                         $this->whatsappRepository->index($new);
+
                     }
                 }
 

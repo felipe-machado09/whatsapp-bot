@@ -14,6 +14,7 @@ class NewsMirror extends Model
         'link',
         'guid',
         'description',
+        'author',
         'category',
         'pubDate'
     ];
