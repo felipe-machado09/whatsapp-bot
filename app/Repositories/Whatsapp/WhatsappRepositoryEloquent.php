@@ -28,11 +28,12 @@ class WhatsappRepositoryEloquent implements WhatsappRepositoryInterface
 
     public function index($new)
     {
+
         NewsMirror::create([
             'title' => $new['title'],
             'link' => $new['link'],
             'guid' => $new['guid'],
-            'author' => $new['author'],
+            'author' => 'Confirma Notícia',
             'description' => $new['description'],
             'category' => $new['category'],
             'pubDate' => $new['pubDate']
