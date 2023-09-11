@@ -24,7 +24,8 @@ class WhatsappController extends Controller
 
     public function index(Request $request)
     {
-        return $this->whatsappService->index($request);
+      $this->whatsappService->index($request);
+      $this->whatsappService->ScheduledShipping();
     }
 
 
